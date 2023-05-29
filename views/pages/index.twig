@@ -24,7 +24,6 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             let audio = new Audio();
-            document.querySelector("body").append(audio);
             audio.src = playlist[currentPlay];
             audio.addEventListener('ended', nextMusic);
 
