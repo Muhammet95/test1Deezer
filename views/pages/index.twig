@@ -2,6 +2,67 @@
 
 {% block body %}
     <div style="display: flex; justify-content: center; align-content: center; height: 100vh;">
-        <h1>SazLab</h1>
+        <div style="display: flex; flex-direction: column; gap: 20px; align-content: center;">
+            <h1 style="text-align: center;">SazLab</h1>
+            <div style="display: flex; gap: 10px;">
+                <button id="prev">Previous music</button>
+                <button id="play">Play/Pause music</button>
+                <button id="next">Next music</button>
+            </div>
+        </div>
     </div>
+
+    <script>
+        const playlist = {
+            0: window.origin + '/music/Chuvstva.mp3',
+            1: window.origin + '/music/Devochka tancuj.mp3',
+            2: window.origin + '/music/Kryl\'ya.mp3',
+            3: window.origin + '/music/Nezamenimy.mp3',
+            4: window.origin + '/music/Obestocheno.mp3',
+        };
+        let currentPlay = 0, playerStatus = 'pause';
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let audio = new Audio();
+            document.querySelector("body").append(audio);
+            audio.src = playlist[currentPlay];
+            audio.addEventListener('ended', nextMusic);
+
+
+            document.querySelector('button#play').addEventListener('click', () => {
+                if (playerStatus === 'pause')
+                    playMusic();
+                else
+                    pauseMusic();
+            });
+
+            document.querySelector('button#prev').addEventListener('click', prevMusic);
+
+            document.querySelector('button#next').addEventListener('click', nextMusic);
+
+            function nextMusic() {
+                pauseMusic();
+                currentPlay = (currentPlay + 1 > 4) ? 0 : currentPlay + 1;
+                audio.src = playlist[currentPlay];
+                playMusic();
+            }
+
+            function prevMusic() {
+                pauseMusic();
+                currentPlay = (currentPlay - 1 < 0) ? 4 : currentPlay - 1;
+                audio.src = playlist[currentPlay];
+                playMusic();
+            }
+
+            function playMusic() {
+                audio.play();
+                playerStatus = 'play';
+            }
+
+            function pauseMusic() {
+                audio.pause();
+                playerStatus = 'pause';
+            }
+        });
+    </script>
 {% endblock %}

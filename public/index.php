@@ -16,7 +16,7 @@ $view = new Environment($loader);
 $app = AppFactory::create();
 
 $app->get('/', function (Request $request, Response $response, $args) use ($view) {
-    $body = $view->render('pages/index.twig');
+    $body = $view->render('pages/index.twig', ['origin' => $request->getUri()]);
     $response->getBody()->write($body);
     return $response;
 });
