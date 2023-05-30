@@ -1,24 +1,19 @@
 <?php
 
-use DevCoder\DotEnv;
+use App\Controllers\PageController;
+use App\Controllers\PlaylistController;
+use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 require __DIR__ . '/../vendor/autoload.php';
-//(new DotEnv(__DIR__ . '/../.env'))->load();
 
-$loader = new FilesystemLoader(__DIR__ . '/../views');
-$view = new Environment($loader);
+$builder = new ContainerBuilder();
+$builder->addDefinitions(__DIR__ . '/../config/di.php');
+$container = $builder->build();
 
+AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-$app->get('/', function (Request $request, Response $response, $args) use ($view) {
-    $body = $view->render('pages/index.twig', ['origin' => $request->getUri()]);
-    $response->getBody()->write($body);
-    return $response;
-});
-
+$app->get('/', PageController::class . ':index');
+$app->get('/playlist', PlaylistController::class . ':get');
 $app->run();

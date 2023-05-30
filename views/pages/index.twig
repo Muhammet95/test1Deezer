@@ -2,66 +2,25 @@
 
 {% block body %}
     <div style="display: flex; justify-content: center; align-content: center; height: 100vh;">
-        <div style="display: flex; flex-direction: column; gap: 20px; align-content: center;">
-            <h1 style="text-align: center;">SazLab</h1>
-            <div style="display: flex; gap: 10px;">
-                <button id="prev">Previous music</button>
-                <button id="play">Play/Pause music</button>
-                <button id="next">Next music</button>
+        <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+            <div style='font-size: 30px; font-weight: bold;'>SazLab</div>
+            <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                <div id="playlist" style="width: 300px;height: 300px; border: 1px solid lightgrey; border-radius: 5px; box-shadow: 0 0 0 1px lightgrey; overflow: scroll;">
+
+                </div>
+                <div style="width: 300px;height: 300px; overflow: hidden; border-radius: 10px; position: relative;">
+                    <img src="/img/artik&asti.jpeg" alt="" style="width: 100%;">
+                    <div style="position: absolute; bottom: 0; width: 100%; height: 80px;background: rgba(255, 255, 255, 0.7); display: flex; align-items: center; padding: 0 5px; gap: 5px;">
+                        <img id="prev" src="/assets/img/skip_previous.svg" alt="" style="width: 40px; border: 1px solid black; border-radius: 2px; cursor:pointer;">
+                        <img id="play" src="/assets/img/play_pause.svg" alt="" style="width: 40px; border: 1px solid black; border-radius: 2px; cursor:pointer;">
+                        <img id="next" src="/assets/img/skip_next.svg" alt="" style="width: 40px; border: 1px solid black; border-radius: 2px; cursor:pointer;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100%;" id="player">
+                            <span class="artist"></span>
+                            <span class="track"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <script>
-        const playlist = {
-            0: window.origin + '/music/Chuvstva.mp3',
-            1: window.origin + '/music/Devochka tancuj.mp3',
-            2: window.origin + '/music/Kryl\'ya.mp3',
-            3: window.origin + '/music/Nezamenimy.mp3',
-            4: window.origin + '/music/Obestocheno.mp3',
-        };
-        let currentPlay = 0, playerStatus = 'pause';
-
-        document.addEventListener("DOMContentLoaded", () => {
-            let audio = new Audio();
-            audio.src = playlist[currentPlay];
-            audio.addEventListener('ended', nextMusic);
-
-
-            document.querySelector('button#play').addEventListener('click', () => {
-                if (playerStatus === 'pause')
-                    playMusic();
-                else
-                    pauseMusic();
-            });
-
-            document.querySelector('button#prev').addEventListener('click', prevMusic);
-
-            document.querySelector('button#next').addEventListener('click', nextMusic);
-
-            function nextMusic() {
-                pauseMusic();
-                currentPlay = (currentPlay + 1 > 4) ? 0 : currentPlay + 1;
-                audio.src = playlist[currentPlay];
-                playMusic();
-            }
-
-            function prevMusic() {
-                pauseMusic();
-                currentPlay = (currentPlay - 1 < 0) ? 4 : currentPlay - 1;
-                audio.src = playlist[currentPlay];
-                playMusic();
-            }
-
-            function playMusic() {
-                audio.play();
-                playerStatus = 'play';
-            }
-
-            function pauseMusic() {
-                audio.pause();
-                playerStatus = 'pause';
-            }
-        });
-    </script>
 {% endblock %}

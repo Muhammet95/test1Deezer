@@ -1,0 +1,6 @@
+#play, #prev, #next {
+    transition: opacity 200ms;
+}
+#play:hover, #prev:hover, #next:hover {
+    opacity: 0.4;
+}
