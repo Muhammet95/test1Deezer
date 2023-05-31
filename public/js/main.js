@@ -9,11 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
     audio.addEventListener('ended', nextMusic);
 
 
+
     document.querySelector('img#play').addEventListener('click', playPause);
 
     document.querySelector('img#prev').addEventListener('click', prevMusic);
 
     document.querySelector('img#next').addEventListener('click', nextMusic);
+
+    // Time/song update
+    audio.addEventListener('timeupdate', updateProgress);
+
 });
 
 function playPause() {
@@ -56,11 +61,21 @@ function playMusic() {
     playerStatus = 'play';
     document.querySelector("#player .artist").innerHTML = playlist[currentPlay].artist;
     document.querySelector("#player .track").innerHTML = playlist[currentPlay].track;
+    document.querySelector('#progress_area > #pointer').style.display = 'block';
+    document.querySelector('#progress_area > #completed').style.display = 'block';
 }
 
 function pauseMusic() {
     audio.pause();
     playerStatus = 'pause';
+}
+
+// Update progress bar
+function updateProgress(e) {
+    const { duration, currentTime } = e.target;
+    const progressPercent = (currentTime / duration) * 100;
+    document.querySelector('#progress_area > #pointer').style.left = `calc(${progressPercent}% - 10px)`;
+    document.querySelector('#progress_area > #completed').style.width = `${progressPercent}%`;
 }
 
 function getPlayList() {
