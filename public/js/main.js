@@ -1,12 +1,19 @@
 let playlist;
 let currentPlay = 0, playerStatus = 'pause';
 let audio;
+let hls;
 
 document.addEventListener("DOMContentLoaded", () => {
     getPlayList();
 
     audio = new Audio();
     audio.addEventListener('ended', nextMusic);
+    hls = new Hls();
+
+
+    audio.addEventListener("error", (e) => {
+        console.log("An error occurred:", e);
+    });
 
 
 
@@ -24,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function playPause() {
     if (!audio.src) {
         if (playlist) {
-            audio.src = playlist[currentPlay].path;
+            setSource(playlist[currentPlay].path);
         }
         setTimeout(playPause, 100);
     } else {
@@ -37,22 +44,22 @@ function playPause() {
 
 function nextMusic() {
     pauseMusic();
-    currentPlay = (currentPlay + 1 > 4) ? 0 : currentPlay + 1;
-    audio.src = playlist[currentPlay].path;
+    currentPlay = (currentPlay + 1 > (playlist.length - 1)) ? 0 : currentPlay + 1;
+    setSource(playlist[currentPlay].path);
     playMusic();
 }
 
 function prevMusic() {
     pauseMusic();
-    currentPlay = (currentPlay - 1 < 0) ? 4 : currentPlay - 1;
-    audio.src = playlist[currentPlay].path;
+    currentPlay = (currentPlay - 1 < 0) ? (playlist.length - 1) : currentPlay - 1;
+    setSource(playlist[currentPlay].path);
     playMusic();
 }
 
 function changeMusic(index) {
     pauseMusic();
     currentPlay = index;
-    audio.src = playlist[currentPlay].path;
+    setSource(playlist[currentPlay].path);
     playMusic();
 }
 
@@ -68,6 +75,19 @@ function playMusic() {
 function pauseMusic() {
     audio.pause();
     playerStatus = 'pause';
+}
+
+function setSource(audioSrc) {
+    if (audio.canPlayType('application/vnd.apple.mpegurl') || audioSrc.endsWith('.mp3')) {
+        hls.detachMedia(audio);
+        audio.src = audioSrc;
+        //
+        // If no native HLS support, check if HLS.js is supported
+        //
+    } else {
+        hls.loadSource(audioSrc);
+        hls.attachMedia(audio);
+    }
 }
 
 // Update progress bar

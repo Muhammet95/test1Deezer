@@ -20,7 +20,7 @@ class PlaylistController
             [
                 'artist' => 'Artik & Asti',
                 'track' => 'Чувства',
-                'path' => '/music/Chuvstva.mp3',
+                'path' => '/music/chuvstva/track.m3u8',
                 'image' => [
                     'small' => '/img/artik&asti.jpeg',
                     'big' => '/img/artik&asti.jpeg'
@@ -47,7 +47,7 @@ class PlaylistController
             [
                 'artist' => 'Artik & Asti',
                 'track' => 'Незаменимы',
-                'path' => '/music/Nezamenimy.mp3',
+                'path' => '/music/nezamenimy/track.m3u8',
                 'image' => [
                     'small' => '/img/artik&asti.jpeg',
                     'big' => '/img/artik&asti.jpeg'
@@ -56,7 +56,7 @@ class PlaylistController
             [
                 'artist' => 'Artik & Asti',
                 'track' => 'Обесточено',
-                'path' => '/music/Obestocheno.mp3',
+                'path' => '/music/obestocheno/track.m3u8',
                 'image' => [
                     'small' => '/img/artik&asti.jpeg',
                     'big' => '/img/artik&asti.jpeg'
