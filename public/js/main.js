@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function playPause() {
     if (!audio.src) {
         if (playlist) {
-            setSource(playlist[currentPlay].path);
+            setAudio(playlist[currentPlay]);
         }
         setTimeout(playPause, 100);
     } else {
@@ -45,21 +45,21 @@ function playPause() {
 function nextMusic() {
     pauseMusic();
     currentPlay = (currentPlay + 1 > (playlist.length - 1)) ? 0 : currentPlay + 1;
-    setSource(playlist[currentPlay].path);
+    setAudio(playlist[currentPlay]);
     playMusic();
 }
 
 function prevMusic() {
     pauseMusic();
     currentPlay = (currentPlay - 1 < 0) ? (playlist.length - 1) : currentPlay - 1;
-    setSource(playlist[currentPlay].path);
+    setAudio(playlist[currentPlay]);
     playMusic();
 }
 
 function changeMusic(index) {
     pauseMusic();
     currentPlay = index;
-    setSource(playlist[currentPlay].path);
+    setAudio(playlist[currentPlay]);
     playMusic();
 }
 
@@ -75,6 +75,15 @@ function playMusic() {
 function pauseMusic() {
     audio.pause();
     playerStatus = 'pause';
+}
+
+function setAudio(context) {
+    setSource(context.path);
+    setCover(context.image.big);
+}
+
+function setCover(coverSrc) {
+    document.querySelector("#cover").src = coverSrc;
 }
 
 function setSource(audioSrc) {
